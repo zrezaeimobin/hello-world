@@ -1,110 +1,288 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>🐍✨ mrLeast Python Learning Roadmap (Fun Engine v0.00)</title>
-  <LINK href="styles.css" rel="stylesheet" type="text/css">
+  <meta charset="utf-8" />
+  <title>🐍✨ mrLeast Python Learning Roadmap (Fun Engine v0.01)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#0f0c29;
+      --bg2:#302b63;
+      --bg3:#24243e;
+      --card:rgba(255,255,255,.08);
+      --border:rgba(255,255,255,.18);
+      --text:#f2f3f7;
+      --muted:#c7c9d3;
+      --accent:#ffd54a;
+      --link:#86c5ff;
+      --shadow: 0 8px 30px rgba(0,0,0,.35);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Poppins,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      line-height:1.8;
+      background: linear-gradient(-45deg,var(--bg1),var(--bg2),var(--bg3),#111);
+      background-size:400% 400%;
+      animation:bg-pan 18s ease infinite;
+      overflow-x:hidden;
+    }
+    @keyframes bg-pan{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header.hero{
+      position:relative;
+      border-radius: calc(var(--radius) + 8px);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      margin:24px 0 36px;
+      background:var(--card);
+      border:1px solid var(--border);
+      isolation:isolate;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;inset:0;
+      background:url("https://cdn.pixabay.com/photo/2015/12/08/00/26/typing-1081799_1280.jpg") center/cover no-repeat;
+      filter:brightness(.55) saturate(1.1);
+      z-index:-1;
+      transform:scale(1.02);
+    }
+    .hero-content{padding:60px 48px}
+    h1{
+      font-family:"Playfair Display",serif;
+      font-size: clamp(28px, 5vw, 52px);
+      line-height:1.1;
+      margin:0 0 12px;
+      color:var(--accent);
+      letter-spacing:.3px;
+    }
+    .tagline{font-size:clamp(15px,1.6vw,18px);color:var(--muted);max-width:900px;margin:0}
+
+    .toolbar{
+      display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 0;
+    }
+    .pill{
+      appearance:none;border:none;cursor:pointer;
+      padding:10px 14px;border-radius:999px;
+      background:rgba(255,255,255,.1);color:var(--text);
+      border:1px solid var(--border);
+      transition:transform .15s ease, background .2s ease, box-shadow .2s ease;
+      font-weight:600;font-size:14px;
+    }
+    .pill:hover{transform:translateY(-1px);background:rgba(255,255,255,.16)}
+    .pill[aria-pressed="true"]{background:var(--accent);color:#222;border-color:transparent;box-shadow:0 6px 20px rgba(255,213,74,.25)}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:18px;
+      margin:26px 0 10px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      transform:translateY(6px);
+      opacity:0;
+      transition:transform .5s ease, opacity .5s ease, box-shadow .2s ease;
+    }
+    .card.reveal{transform:translateY(0);opacity:1}
+    .card:hover{box-shadow:0 14px 40px rgba(0,0,0,.5)}
+    .thumb{
+      aspect-ratio:16/9; width:100%; display:block; object-fit:cover;
+      filter:saturate(1.05) contrast(1.02) brightness(.94);
+    }
+    .content{padding:18px 18px 20px}
+    h2,h3{color:var(--accent);margin:.2em 0 .3em}
+    h2{font-size:clamp(20px,2.5vw,28px);font-family:"Playfair Display",serif}
+    h3{font-size:18px}
+    p{margin:.4em 0 .8em}
+    a{color:var(--link);text-decoration:none;font-weight:700}
+    a:hover{text-decoration:underline}
+    .note{
+      font-family:"JetBrains Mono",monospace;
+      font-size:13px;color:var(--muted)
+    }
+    .tips{
+      margin:34px 0;
+      padding:22px 22px 6px;
+      border-radius:var(--radius);
+      background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+    ul.fancy{list-style:none;padding-left:0;margin:10px 0 0}
+    ul.fancy li{padding:10px 0 10px 14px;border-bottom:1px dashed var(--border)}
+    ul.fancy li:last-child{border-bottom:none}
+    .philo{
+      margin:28px 0 60px;padding:28px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:radial-gradient(1200px 400px at 10% -20%, rgba(255,213,74,.18), transparent 55%),
+                 radial-gradient(900px 380px at 110% 120%, rgba(134,197,255,.2), transparent 60%),
+                 var(--card);
+      box-shadow:var(--shadow);
+    }
+
+    .footer{
+      text-align:center;color:var(--muted);font-size:13px;margin:28px 0 40px
+    }
+
+    /* subtle float anim for emojis */
+    .floaty{display:inline-block;animation:floaty 4s ease-in-out infinite}
+    @keyframes floaty{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+    }
+
+    /* reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important;transition:none !important}
+      .card{opacity:1;transform:none}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-content">
+        <h1>🐍✨ mrLeast Python Learning Roadmap <span class="floaty">v0.01</span></h1>
+        <p class="tagline">
+          A vibey roadmap fueled by curiosity, tea energy, and zero tolerance for boring study plans. Pick your lane, switch anytime, stay playful, learn faster.
+        </p>
 
-<h1>🐍✨ mrLeast Python Learning Roadmap (mrLeast-Style Fun Engine v0.00)</h1>
-  <p>
-    A roadmap powered by pure vibes, curiosity, humor, tea energy, and zero tolerance for boring learning journeys.
-  </p>
+        <!-- Conditional Logic Tabs -->
+        <div class="toolbar" role="tablist" aria-label="Choose your learning lane">
+          <button class="pill" role="tab" aria-pressed="true" data-filter="all">✨ Show All</button>
+          <button class="pill" role="tab" aria-pressed="false" data-filter="reading">📚 Reading</button>
+          <button class="pill" role="tab" aria-pressed="false" data-filter="video">🎥 Video</button>
+          <button class="pill" role="tab" aria-pressed="false" data-filter="diy">🛠️ DIY</button>
+          <button class="pill" role="tab" aria-pressed="false" data-filter="structure">🏫 Structure</button>
+          <button class="pill" role="tab" aria-pressed="false" data-filter="cert">🎖️ Cert</button>
+        </div>
+      </div>
+    </header>
 
-  <!-- CONDITION 1 -->
-  <div class="section">
-    <h2>📚 If you the “reading warrior” type:</h2>
-    <p>
-      Roll over to <a href="https://www.w3schools.com/python/">W3Schools</a>.  
-      Free or paid, whatever fits your pockets and your soul.  
-      W3Schools is that quiet library friend who never judges you for googling “python print syntax” for the 10th time.
-    </p>
+    <!-- Cards Grid -->
+    <section class="grid" id="cards">
+      <!-- Reading -->
+      <article class="card reveal" data-type="reading">
+        <img class="thumb" loading="lazy" alt="Reading & docs" src="https://cdn.pixabay.com/photo/2017/08/06/22/01/books-2596809_1280.jpg">
+        <div class="content">
+          <h2>📚 If you the “reading warrior” type</h2>
+          <p>Roll to <a href="https://www.w3schools.com/python/" target="_blank" rel="noopener">W3Schools</a>. Free or paid, follow your pockets and your soul. That quiet library friend who never judges your “python print syntax” searches.</p>
+          <p class="note">Tip: Read a section → immediately type 3 tiny examples in your terminal. Muscle memory > memory memory.</p>
+        </div>
+      </article>
+
+      <!-- Video -->
+      <article class="card reveal" data-type="video">
+        <img class="thumb" loading="lazy" alt="Video learning" src="https://cdn.pixabay.com/photo/2015/01/08/18/26/entrepreneur-593371_1280.jpg">
+        <div class="content">
+          <h2>🎥 If video-learning speaks to your spirit</h2>
+          <p>Hit <a href="https://www.youtube.com/@programmingwithmosh" target="_blank" rel="noopener">Mosh Hamedani</a>. Teaches Python like he narratin’ your brain’s evolution docu-series. Free, paid, premium — choose your seasoning.</p>
+          <p class="note">Try: 20 minutes watch → pause → code the concept blind.</p>
+        </div>
+      </article>
+
+      <!-- DIY -->
+      <article class="card reveal" data-type="diy">
+        <img class="thumb" loading="lazy" alt="DIY coding" src="https://cdn.pixabay.com/photo/2016/11/29/04/17/laptop-1868929_1280.jpg">
+        <div class="content">
+          <h2>🛠️ If you a DIY, midnight-coding person</h2>
+          <p>Summon <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a>, <a href="https://grok.com" target="_blank" rel="noopener">Grok</a>, or <a href="https://kimi.moonshot.cn/" target="_blank" rel="noopener">Kimi</a>. Ask, build, iterate, roast your bugs at 3 a.m. Project-based spirituality.</p>
+          <p class="note">Challenge: “Guess-the-number” game → add difficulty levels → add score saving.</p>
+        </div>
+      </article>
+
+      <!-- Structure -->
+      <article class="card reveal" data-type="structure">
+        <img class="thumb" loading="lazy" alt="Structured learning" src="https://cdn.pixabay.com/photo/2016/03/09/09/30/graduation-1245573_1280.jpg">
+        <div class="content">
+          <h2>🏫 If you want structure & support</h2>
+          <p>Enroll on <a href="https://coursera.org" target="_blank" rel="noopener">Coursera</a>. Mentors, peer forums, graded work, university vibes. “Young grasshopper, today you conquer for-loops.”</p>
+          <p class="note">Pick courses with projects you actually want to finish. Future-you will thank you.</p>
+        </div>
+      </article>
+
+      <!-- Cert -->
+      <article class="card reveal" data-type="cert">
+        <img class="thumb" loading="lazy" alt="Certificates" src="https://cdn.pixabay.com/photo/2016/12/13/22/34/certificate-1900885_1280.jpg">
+        <div class="content">
+          <h2>🎖️ If you need certificates that actually matter</h2>
+          <p>Tap <a href="https://www.linkedin.com/learning/" target="_blank" rel="noopener">LinkedIn Learning</a>. Certificates look clean on your profile and don’t feel like printer-paper cosplay 💀</p>
+          <p class="note">Upload your certs, then post a demo clip. Proof > paper.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Tips -->
+    <section class="tips">
+      <h2>🧠💬 Extra Tips (not for everybody)</h2>
+      <ul class="fancy">
+        <li><strong>Follow your energy, not a military schedule.</strong> If your soul says “lists today,” do lists. If it says “noodles first,” noodles first. Flow, then code.</li>
+        <li><strong>Treat learning like a playground.</strong> Fun is a legal performance enhancer. Joy = speed. Boredom = lag.</li>
+        <li><strong>Don’t bully yourself.</strong> Curiosity is a gift, not punishment. If tired, pause. Touch grass. Drink tea. Tell yourself: “I’m a cosmic being on a coding quest.” Then resume.</li>
+      </ul>
+    </section>
+
+    <!-- Philosophy -->
+    <section class="philo">
+      <h2>🔥 Mini Philosophy Boost</h2>
+      <p>
+        Coding mirrors life: sometimes it runs, sometimes it errors, sometimes the universe is dramatic. Every line you write rebels against ignorance. Every bug you fix negotiates with chaos. Python ain’t the goal. Growth is. Python’s just the ride, windows down, music up, confidence high 🚗🎶🐍✨
+      </p>
+      <p class="note">P.S. Terminal spells are faster when you smile at them. Science probably agrees.</p>
+    </section>
+
+    <p class="footer">Images hotlinked from <a href="https://pixabay.com/" target="_blank" rel="noopener">Pixabay</a> • Fonts via Google Fonts • Built with love and a tiny 🫶 of chaos.</p>
   </div>
 
-  <!-- CONDITION 2 -->
-  <div class="section">
-    <h2>🎥 If video-learning speaks to your spirit:</h2>
-    <p>
-      Hit up <a href="https://www.youtube.com/@programmingwithmosh">Mosh Hamedani</a>.  
-      Bro teaches Python like he narratin’ a National Geographic documentary about your brain evolving.  
-      Free, paid, premium, ultra, chakra-aligned — pick your blessing.
-    </p>
-  </div>
+  <script>
+    // Tab-style conditional filtering
+    const pills = document.querySelectorAll('.pill');
+    const cards = document.querySelectorAll('.card');
 
-  <!-- CONDITION 3 -->
-  <div class="section">
-    <h2>🛠️ If you a DIY, self-made, midnight-coding person:</h2>
-    <p>
-      Summon <a href="https://chatgpt.com">ChatGPT</a>,  
-      or <a href="https://grok.com">Grok</a>,  
-      or <a href="https://kimi.moonshot.cn/">Kimi</a>.  
-      Ask anything. Build anything. Complain about bugs at 3 a.m. if you need to.  
-      This is project-based spirituality.
-    </p>
-  </div>
+    function setFilter(type){
+      cards.forEach(c=>{
+        if(type==='all' || c.dataset.type===type){
+          c.style.display='';
+          setTimeout(()=>c.classList.add('reveal'),20);
+        }else{
+          c.style.display='none';
+        }
+      });
+    }
 
-  <!-- CONDITION 4 -->
-  <div class="section">
-    <h2>🏫 If you want structure & support:</h2>
-    <p>
-      Then you need <a href="https://coursera.org">Coursera</a>.  
-      Courses with mentors, graded work, university vibes, and peaceful learning energy.  
-      “Young grasshopper, today you will conquer for loops.”
-    </p>
-  </div>
+    pills.forEach(b=>{
+      b.addEventListener('click', ()=>{
+        pills.forEach(p=>p.setAttribute('aria-pressed','false'));
+        b.setAttribute('aria-pressed','true');
+        setFilter(b.dataset.filter);
+      });
+    });
 
-  <!-- CONDITION 5 -->
-  <div class="section">
-    <h2>🎖️ If you need certificates that actually matter:</h2>
-    <p>
-      Tap into <a href="https://www.linkedin.com/learning/">LinkedIn Learning</a>.  
-      Their certificates look good on your profile and don’t make you feel like you printed them at home 💀  
-      Show the world you Python-literate now.
-    </p>
-  </div>
-
-  <!-- TIPS -->
-  <div class="section">
-    <h2>🧠💬 Extra Tips (not for everybody)</h2>
-
-    <h3>1. Follow your energy, not military schedules</h3>
-    <p>
-      Life ain’t bootcamp. If your soul say “I wanna learn lists today,” go do it.  
-      If your soul say “I need noodles before I write a function,” obey it.  
-      Flow like water, code like Bruce Lee.
-    </p>
-
-    <h3>2. Make learning feel like a playground, not a prison</h3>
-    <p>
-      When you enjoy it, your brain turns into a turbocharged engine.  
-      When you hate it, your brain loads slower than Windows XP in 2004.
-    </p>
-
-    <h3>3. Don’t bully yourself with pressure</h3>
-    <p>
-      Curiosity is a gift, not punishment.  
-      If you get tired, pause. Touch grass. Drink tea.  
-      Tell yourself: “Zohair, you a cosmic being on a coding quest.”  
-      Then dive back in when you’re ready.
-    </p>
-  </div>
-
-  <!-- Philosophy -->
-  <div class="section">
-    <h2>🔥 Mini Philosophy Boost</h2>
-    <p>
-      Coding is like life: sometimes it works, sometimes it throws errors.  
-      Sometimes it’s your fault, sometimes the universe acting dramatic.  
-      Every line you write is a rebellion against ignorance.  
-      Every bug you fix is a negotiation with chaos.  
-      Python isn’t the goal — growth is.  
-      Python just the vehicle you drivin’ with the windows down, music loud, confidence high 🚗🎶🐍✨
-    </p>
-  </div>
-
-
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('reveal'); io.unobserve(e.target); }
+      });
+    },{threshold:.15});
+    document.querySelectorAll('.card').forEach(el=>io.observe(el));
+  </script>
 </body>
 </html>
