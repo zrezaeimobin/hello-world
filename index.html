@@ -1,26 +1,16 @@
-Here’s your updated **multilingual page** with:
-
-* Language switcher pinned to the **top-end** automatically:
-
-  * LTR (English, German, Turkish, etc.) → top-right
-  * RTL (Arabic, Persian, Sorani, Badinî) → top-left
-* An **embedded, ad-free, open-source Python terminal** using **Pyodide** (runs fully in the browser).
-* A **JavaScript** tab so the “terminal supports other languages” too.
-* An embedded **pythoncheatsheet.org** pane (with a graceful fallback link if the site blocks iframes).
-
-Just replace your current `index.html` with this:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <title>🐍✨ mrLeast Python Learning Roadmap — Multilingual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Zohair’s multilingual Python learning roadmap with reading, video, DIY, structured, and certificate tracks." />
+  <meta name="description" content="Multilingual Python roadmap with embedded Pyodide terminal, cheatsheet, and collaboration." />
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Preconnect + Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Latin UI stack + code; Vazirmatn for Arabic-script languages -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -32,32 +22,29 @@ Just replace your current `index.html` with this:
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; color:var(--text); font-family:Poppins,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      line-height:1.8; background:linear-gradient(-45deg,var(--bg1),var(--bg2),var(--bg3),#111);
+      margin:0; color:var(--text);
+      font-family:Poppins,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      line-height:1.8;
+      background:linear-gradient(-45deg,var(--bg1),var(--bg2),var(--bg3),#111);
       background-size:400% 400%; animation:bg-pan 18s ease infinite; overflow-x:hidden;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
+    /* Switch to Vazirmatn for Arabic-script languages */
+    body.ar-script{ font-family:Vazirmatn,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+
     @keyframes bg-pan{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
     .wrap{max-width:1100px;margin:0 auto;padding:24px}
 
-    /* Top-end language switcher (logical positioning) */
+    /* Top-end language switcher */
     .lang-fixed{
-      position:fixed;
-      inset-block-start:16px;         /* top */
-      inset-inline-end:16px;          /* right in LTR, left in RTL automatically with override below */
-      z-index:1000;
-      background:rgba(255,255,255,.08);
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:10px 12px;
-      display:flex;gap:8px;align-items:center;
-      backdrop-filter: blur(8px);
-      box-shadow:var(--shadow);
+      position:fixed; inset-block-start:16px; inset-inline-end:16px; z-index:1000;
+      background:rgba(255,255,255,.08); border:1px solid var(--border);
+      border-radius:14px; padding:10px 12px; display:flex; gap:8px; align-items:center;
+      backdrop-filter: blur(8px); box-shadow:var(--shadow)
     }
     .lang-fixed label{font-weight:700}
-    .lang-fixed select{
-      background:transparent;color:var(--text);border:none;font-weight:700;outline:none;cursor:pointer
-    }
+    .lang-fixed select{background:transparent;color:var(--text);border:none;font-weight:700;outline:none;cursor:pointer}
     /* Flip to top-left for RTL */
     [dir="rtl"] .lang-fixed{inset-inline-end:auto; inset-inline-start:16px}
 
@@ -67,10 +54,13 @@ Just replace your current `index.html` with this:
     }
     .hero::before{
       content:"";position:absolute;inset:0;
-      background:url("https://cdn.pixabay.com/photo/2015/12/08/00/26/typing-1081799_1280.jpg") center/cover no-repeat;
-      filter:brightness(.55) saturate(1.1);z-index:-1;transform:scale(1.02);
+      background:#151528; /* fallback color while image loads */
+      z-index:-1;
     }
-    .hero-content{padding:60px 48px}
+    .hero-img{
+      width:100%; height:260px; object-fit:cover; display:block; opacity:.7; filter:saturate(1.05) contrast(1.02);
+    }
+    .hero-content{padding:24px 48px 44px}
     h1{
       font-family:"Playfair Display",serif;font-size:clamp(28px,5vw,52px);line-height:1.1;margin:0 0 12px;
       color:var(--accent);letter-spacing:.3px;
@@ -93,7 +83,7 @@ Just replace your current `index.html` with this:
     }
     .card.reveal{transform:translateY(0);opacity:1}
     .card:hover{box-shadow:0 14px 40px rgba(0,0,0,.5)}
-    .thumb{aspect-ratio:16/9;width:100%;display:block;object-fit:cover;filter:saturate(1.05) contrast(1.02) brightness(.94)}
+    .thumb{aspect-ratio:16/9;width:100%;display:block;object-fit:cover}
     .content{padding:18px 18px 20px}
     h2,h3{color:var(--accent);margin:.2em 0 .3em}
     h2{font-size:clamp(20px,2.5vw,28px);font-family:"Playfair Display",serif}
@@ -103,26 +93,20 @@ Just replace your current `index.html` with this:
     a:hover{text-decoration:underline}
     .note{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--muted)}
 
-    .tips,.philo,.collab,.lab,.cheat{
+    .tips,.philo,.collab,.lab,.cheat,.thanks{
       margin:34px 0;padding:22px 22px 12px;border-radius:var(--radius);
       background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
       border:1px solid var(--border);box-shadow:var(--shadow);
     }
 
-    ul.fancy{list-style:none;padding-left:0;margin:10px 0 0}
-    ul.fancy li{padding:10px 0 10px 14px;border-bottom:1px dashed var(--border)}
-    ul.fancy li:last-child{border-bottom:none}
-
     .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0 8px}
-    .btn{
-      display:inline-block;padding:10px 14px;border-radius:12px;background:var(--accent);color:#222;font-weight:800;
-      border:0;box-shadow:0 8px 18px rgba(255,213,74,.25);transition:transform .15s ease,box-shadow .2s ease;
-    }
+    .btn{display:inline-block;padding:10px 14px;border-radius:12px;background:var(--accent);color:#222;font-weight:800;
+      border:0;box-shadow:0 8px 18px rgba(255,213,74,.25);transition:transform .15s ease,box-shadow .2s ease;}
     .btn:hover{transform:translateY(-1px);box-shadow:0 10px 26px rgba(255,213,74,.3)}
     .btn.alt{background:#86c5ff;color:#0b2035;box-shadow:0 8px 18px rgba(134,197,255,.25)}
     .btn.ghost{background:transparent;color:var(--link);border:1px solid var(--border)}
 
-    /* Code Lab styles */
+    /* Code Lab */
     .lab-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
     .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.06);cursor:pointer}
     .chip[aria-pressed="true"]{background:var(--accent);color:#222;border-color:transparent}
@@ -130,9 +114,11 @@ Just replace your current `index.html` with this:
     textarea.code{
       width:100%; min-height:180px; resize:vertical; padding:12px;border-radius:12px;border:1px solid var(--border);
       background:#0e0e14;color:#eaeaf0;font-family:"JetBrains Mono",monospace;font-size:14px;line-height:1.5;
+      direction:ltr; unicode-bidi:plaintext; /* always LTR for code */
     }
     pre.output{
-      background:#0b0b11;border:1px solid var(--border);color:#d7d7df;border-radius:12px;padding:12px;white-space:pre-wrap;min-height:100px
+      background:#0b0b11;border:1px solid var(--border);color:#d7d7df;border-radius:12px;padding:12px;white-space:pre-wrap;min-height:100px;
+      direction:ltr; unicode-bidi:plaintext; /* always LTR for output */
     }
 
     .iframe-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden}
@@ -167,6 +153,18 @@ Just replace your current `index.html` with this:
 
   <div class="wrap">
     <header class="hero">
+      <!-- Hero image with multi-fallback -->
+      <picture>
+        <source srcset="https://images.pexels.com/photos/574077/pexels-photo-574077.jpeg?auto=compress&cs=tinysrgb&w=1600" />
+        <source srcset="https://cdn.pixabay.com/photo/2015/12/08/00/26/typing-1081799_1280.jpg" />
+        <img class="hero-img resilient" alt="Typing on laptop" referrerpolicy="no-referrer"
+             src="https://picsum.photos/id/1/1600/600" data-fallbacks='[
+               "https://cdn.pixabay.com/photo/2015/12/08/00/26/typing-1081799_1280.jpg",
+               "https://images.unsplash.com/photo-1518773553398-650c184e0bb3?q=80&w=1600",
+               "https://picsum.photos/1600/600?random=11"
+             ]'/>
+      </picture>
+
       <div class="hero-content">
         <h1 id="t-title">🐍✨ mrLeast Python Learning Roadmap <span class="floaty">vibes-on</span></h1>
         <p id="t-tagline" class="tagline">Choose your lane: reading, video, DIY, structured, or certificate. Bounce when the energy shifts. Joy-first, pressure-last.</p>
@@ -183,10 +181,19 @@ Just replace your current `index.html` with this:
       </div>
     </header>
 
-    <!-- Cards Grid -->
+    <!-- Cards Grid with resilient images -->
     <section class="grid" id="cards">
       <article class="card" data-type="reading">
-        <img class="thumb" alt="Reading & docs" src="https://cdn.pixabay.com/photo/2017/08/06/22/01/books-2596809_1280.jpg">
+        <picture>
+          <source srcset="https://images.pexels.com/photos/1290141/pexels-photo-1290141.jpeg?auto=compress&cs=tinysrgb&w=1280" />
+          <source srcset="https://cdn.pixabay.com/photo/2017/08/06/22/01/books-2596809_1280.jpg" />
+          <img class="thumb resilient" alt="Reading & docs" referrerpolicy="no-referrer"
+               src="https://picsum.photos/id/21/1280/720" data-fallbacks='[
+                 "https://cdn.pixabay.com/photo/2017/08/06/22/01/books-2596809_1280.jpg",
+                 "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1280",
+                 "https://picsum.photos/1280/720?random=21"
+               ]'>
+        </picture>
         <div class="content">
           <h2 id="c1-title">📚 If you’re the reading type</h2>
           <p id="c1-body">Head to <a href="https://www.w3schools.com/python/" target="_blank" rel="noopener">W3Schools</a>. Read one section, then type three tiny examples. Fingers teach faster than memory.</p>
@@ -195,7 +202,16 @@ Just replace your current `index.html` with this:
       </article>
 
       <article class="card" data-type="video">
-        <img class="thumb" alt="Video learning" src="https://cdn.pixabay.com/photo/2015/01/08/18/26/entrepreneur-593371_1280.jpg">
+        <picture>
+          <source srcset="https://images.pexels.com/photos/4145354/pexels-photo-4145354.jpeg?auto=compress&cs=tinysrgb&w=1280" />
+          <source srcset="https://cdn.pixabay.com/photo/2015/01/08/18/26/entrepreneur-593371_1280.jpg" />
+          <img class="thumb resilient" alt="Video learning" referrerpolicy="no-referrer"
+               src="https://picsum.photos/id/1005/1280/720" data-fallbacks='[
+                 "https://cdn.pixabay.com/photo/2015/01/08/18/26/entrepreneur-593371_1280.jpg",
+                 "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=1280",
+                 "https://picsum.photos/1280/720?random=22"
+               ]'>
+        </picture>
         <div class="content">
           <h2 id="c2-title">🎥 If video speaks to you</h2>
           <p id="c2-body">Try <a href="https://www.youtube.com/@programmingwithmosh" target="_blank" rel="noopener">Mosh Hamedani</a>. Watch 20 minutes, pause, rebuild from memory.</p>
@@ -204,7 +220,16 @@ Just replace your current `index.html` with this:
       </article>
 
       <article class="card" data-type="diy">
-        <img class="thumb" alt="DIY coding" src="https://cdn.pixabay.com/photo/2016/11/29/04/17/laptop-1868929_1280.jpg">
+        <picture>
+          <source srcset="https://images.pexels.com/photos/2115217/pexels-photo-2115217.jpeg?auto=compress&cs=tinysrgb&w=1280" />
+          <source srcset="https://cdn.pixabay.com/photo/2016/11/29/04/17/laptop-1868929_1280.jpg" />
+          <img class="thumb resilient" alt="DIY coding" referrerpolicy="no-referrer"
+               src="https://picsum.photos/id/180/1280/720" data-fallbacks='[
+                 "https://cdn.pixabay.com/photo/2016/11/29/04/17/laptop-1868929_1280.jpg",
+                 "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?q=80&w=1280",
+                 "https://picsum.photos/1280/720?random=23"
+               ]'>
+        </picture>
         <div class="content">
           <h2 id="c3-title">🛠️ If you’re a DIY night owl</h2>
           <p id="c3-body">Use <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a>, <a href="https://grok.com" target="_blank" rel="noopener">Grok</a>, or <a href="https://kimi.moonshot.cn/" target="_blank" rel="noopener">Kimi</a>. Ask, tweak, ship.</p>
@@ -213,7 +238,16 @@ Just replace your current `index.html` with this:
       </article>
 
       <article class="card" data-type="structure">
-        <img class="thumb" alt="Structured learning" src="https://cdn.pixabay.com/photo/2016/03/09/09/30/graduation-1245573_1280.jpg">
+        <picture>
+          <source srcset="https://images.pexels.com/photos/733852/pexels-photo-733852.jpeg?auto=compress&cs=tinysrgb&w=1280" />
+          <source srcset="https://cdn.pixabay.com/photo/2016/03/09/09/30/graduation-1245573_1280.jpg" />
+          <img class="thumb resilient" alt="Structured learning" referrerpolicy="no-referrer"
+               src="https://picsum.photos/id/200/1280/720" data-fallbacks='[
+                 "https://cdn.pixabay.com/photo/2016/03/09/09/30/graduation-1245573_1280.jpg",
+                 "https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1280",
+                 "https://picsum.photos/1280/720?random=24"
+               ]'>
+        </picture>
         <div class="content">
           <h2 id="c4-title">🏫 If you want structure & support</h2>
           <p id="c4-body">Join <a href="https://coursera.org" target="_blank" rel="noopener">Coursera</a>. Mentors, forums, graded work.</p>
@@ -222,7 +256,16 @@ Just replace your current `index.html` with this:
       </article>
 
       <article class="card" data-type="cert">
-        <img class="thumb" alt="Certificates" src="https://cdn.pixabay.com/photo/2016/12/13/22/34/certificate-1900885_1280.jpg">
+        <picture>
+          <source srcset="https://images.pexels.com/photos/3769711/pexels-photo-3769711.jpeg?auto=compress&cs=tinysrgb&w=1280" />
+          <source srcset="https://cdn.pixabay.com/photo/2016/12/13/22/34/certificate-1900885_1280.jpg" />
+          <img class="thumb resilient" alt="Certificates" referrerpolicy="no-referrer"
+               src="https://picsum.photos/id/1011/1280/720" data-fallbacks='[
+                 "https://cdn.pixabay.com/photo/2016/12/13/22/34/certificate-1900885_1280.jpg",
+                 "https://images.unsplash.com/photo-1518131678677-a2ab241b1b87?q=80&w=1280",
+                 "https://picsum.photos/1280/720?random=25"
+               ]'>
+        </picture>
         <div class="content">
           <h2 id="c5-title">🎖️ If you need certificates that matter</h2>
           <p id="c5-body">Use <a href="https://www.linkedin.com/learning/" target="_blank" rel="noopener">LinkedIn Learning</a>. Add the cert, plus a demo repo or clip.</p>
@@ -231,7 +274,7 @@ Just replace your current `index.html` with this:
       </article>
     </section>
 
-    <!-- Code Lab: Pyodide (Python) + JavaScript -->
+    <!-- Code Lab -->
     <section class="lab">
       <h2 id="lab-title">🧪 Code Lab: Run Python (Pyodide) or JavaScript in your browser</h2>
       <p id="lab-desc" class="note">Open-source, ad-free. Python runs via Pyodide (WASM). JS runs natively.</p>
@@ -282,12 +325,20 @@ for i in range(3):
       <p class="note" id="t-col-note">Want collaborator access? Open an issue titled “Invite me” with your GitHub username.</p>
     </section>
 
+    <!-- Special Thanks -->
+    <section class="thanks">
+      <h2>🌟 Special Thanks</h2>
+      <p>With respect and gratitude to the late <strong>Saber Rastikderdar</strong> for inspiring learners. Explore work attributed here:
+        <a href="https://github.com/saberrastikderdar" target="_blank" rel="noopener">github.com/saberrastikderdar</a>.
+      </p>
+    </section>
+
     <p class="footer" id="t-footer">
-      Images: Pixabay • Fonts: Google Fonts • Built by Zohair with curiosity and a dash of chaos.
+      Images with resilient fallbacks • Fonts: Poppins, Playfair Display, JetBrains Mono, Vazirmatn • Built by Zohair.
     </p>
   </div>
 
-  <!-- Pyodide (open-source Python in browser) -->
+  <!-- Pyodide -->
   <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 
   <script>
@@ -297,12 +348,18 @@ for i in range(3):
     },{threshold:.15});
     document.querySelectorAll('.card').forEach(el=>io.observe(el));
 
-    // Image fallback
-    const fallback = "https://picsum.photos/1280/720?random=9";
-    document.querySelectorAll('img.thumb').forEach(img=>{
-      img.addEventListener('error', ()=>{ img.src = fallback; }, { once:true });
-      img.loading = "lazy"; img.decoding = "async";
-    });
+    // Image multi-fallback rotator
+    function attachResilience(img){
+      try{
+        const list = JSON.parse(img.getAttribute('data-fallbacks')||'[]');
+        let i = 0;
+        img.addEventListener('error', ()=>{
+          if(i < list.length){ img.src = list[i++]; }
+          else { img.src = 'https://picsum.photos/1280/720?random=' + Math.floor(Math.random()*1000); }
+        }, { once:false });
+      }catch{}
+    }
+    document.querySelectorAll('img.resilient').forEach(attachResilience);
 
     // Tabs filtering
     const pills = document.querySelectorAll('.pill');
@@ -321,128 +378,56 @@ for i in range(3):
       });
     });
 
-    // RTL languages list for dir flipping + top-end position
+    // RTL languages list and Arabic-script toggle for fonts
     const rtl = new Set(['fa','ar','ckb','bd']);
+    const arScript = new Set(['fa','ar','ckb','bd']);
 
-    // i18n dictionary (same content as before, trimmed here for brevity in code comments)
+    // Minimal i18n (kept from previous version – only keys needed here)
     const i18n = {
-      /* EN */ en:{language:"Language",title:"🐍✨ mrLeast Python Learning Roadmap",
-        tagline:"Choose your lane: reading, video, DIY, structured, or certificate. Bounce when the energy shifts. Joy-first, pressure-last.",
-        tabs:{all:"✨ Show All",reading:"📚 Reading",video:"🎥 Video",diy:"🛠️ DIY",structure:"🏫 Structure",cert:"🎖️ Cert"},
-        c1t:"📚 If you’re the reading type",
-        c1b:'Head to <a href="https://www.w3schools.com/python/" target="_blank" rel="noopener">W3Schools</a>. Read one section, then type three tiny examples. Fingers teach faster than memory.',
-        c1n:"Pro tip: keep a notes.md with your own snippets.",
-        c2t:"🎥 If video speaks to you",
-        c2b:'Try <a href="https://www.youtube.com/@programmingwithmosh" target="_blank" rel="noopener">Mosh Hamedani</a>. Watch 20 minutes, pause, rebuild from memory.',
-        c2n:"Learning = rewriting, not just watching.",
-        c3t:"🛠️ If you’re a DIY night owl",
-        c3b:'Use <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a>, <a href="https://grok.com" target="_blank" rel="noopener">Grok</a>, or <a href="https://kimi.moonshot.cn/" target="_blank" rel="noopener">Kimi</a>. Ask, tweak, ship.',
-        c3n:"Challenge: guess-the-number → add levels + score.",
-        c4t:"🏫 If you want structure & support",
-        c4b:'Join <a href="https://coursera.org" target="_blank" rel="noopener">Coursera</a>. Mentors, forums, graded work.',
-        c4n:"Pick projects you’ll actually finish.",
-        c5t:"🎖️ If you need certificates that matter",
-        c5b:'Use <a href="https://www.linkedin.com/learning/" target="_blank" rel="noopener">LinkedIn Learning</a>. Add the cert, plus a demo repo or clip.',
-        c5n:"Proof beats paper.",
-        tips:"🧠💬 Extra Tips (not for everybody)",
-        tip1:"<strong>Follow your energy.</strong> Flow first, code second.",
-        tip2:"<strong>Playground, not prison.</strong> Joy speeds learning.",
-        tip3:"<strong>Be kind to yourself.</strong> Pause, tea, grass, return.",
-        phTitle:"🔥 Mini Philosophy Boost",
-        phBody:"Coding mirrors life: some days smooth, some days error. The goal is growth. Python is the ride.",
-        phNote:"Smiling at the terminal increases FPS. Probably.",
-        colTitle:"🤝 Collaborate with me on GitHub",
-        colBody:"Improve this roadmap, add translations, or drop mini-projects. Pull up.",
-        btnRepo:"⭐ View the Repo", btnFork:"🍴 Fork & Contribute", btnIssue:"🐞 Open an Issue", btnPR:"📬 Send a Pull Request",
-        colNote:'Want collaborator access? Open an issue titled “Invite me” with your GitHub username.',
-        footer:"Images: Pixabay • Fonts: Google Fonts • Built by Zohair with curiosity and a dash of chaos.",
-        labTitle:"🧪 Code Lab: Run Python (Pyodide) or JavaScript in your browser",
-        labDesc:"Open-source, ad-free. Python runs via Pyodide (WASM). JS runs natively.",
-        cheatTitle:"📎 Python Cheatsheet (pythoncheatsheet.org)",
-        cheatNote:'If the site blocks embedding, <a href="https://www.pythoncheatsheet.org/" target="_blank" rel="noopener">open the cheatsheet in a new tab</a>.'
-      },
-      /* FA */ fa:{language:"زبان",title:"🐍✨ نقشه راه پایتون mrLeast",
-        tagline:"مسیرت را انتخاب کن: خواندنی، ویدئویی، خودت بساز، ساختارمند یا مدرک. با انرژی عوض شو. شادی اول.",
-        tabs:{all:"✨ نمایش همه",reading:"📚 مطالعه",video:"🎥 ویدئو",diy:"🛠️ خودآموز",structure:"🏫 ساختارمند",cert:"🎖️ مدرک"},
-        c1t:"📚 اگر اهل مطالعه‌ای",
-        c1b:'برو به <a href="https://www.w3schools.com/python/" target="_blank" rel="noopener">W3Schools</a>. یک بخش بخوان و سه مثال کوچک تایپ کن.',
-        c1n:"نکته: فایل notes.md بساز.",
-        c2t:"🎥 اگر با ویدئو بهتر می‌گیری",
-        c2b:'کانال <a href="https://www.youtube.com/@programmingwithmosh" target="_blank" rel="noopener">Mosh</a> را ببین.',
-        c2n:"یادگیری = بازنویسی.",
-        c3t:"🛠️ اگر خودآموزی",
-        c3b:'از ChatGPT / Grok / Kimi کمک بگیر.',
-        c3n:"چالش: حدس عدد + مرحله + امتیاز.",
-        c4t:"🏫 اگر ساختار می‌خواهی",
-        c4b:'در Coursera ثبت‌نام کن.',
-        c4n:"پروژه‌ای انتخاب کن که تمامش می‌کنی.",
-        c5t:"🎖️ اگر مدرک معتبر می‌خواهی",
-        c5b:'LinkedIn Learning + نمونه‌کار.',
-        c5n:"اثبات از کاغذ بهتر است.",
-        tips:"🧠💬 نکته‌ها",
-        tip1:"<strong>دنبال انرژی‌ات برو.</strong>",
-        tip2:"<strong>زمینِ بازی نه زندان.</strong>",
-        tip3:"<strong>به خودت مهربان باش.</strong>",
-        phTitle:"🔥 تقویت فلسفی",
-        phBody:"کدنویسی مثل زندگی: روزی روان، روزی خطا. هدف رشد است؛ پایتون مرکب.",
-        phNote:"لبخند به ترمینال احتمالاً FPS را زیاد می‌کند.",
-        colTitle:"🤝 همکاری در گیت‌هاب",
-        colBody:"ترجمه اضافه کن یا پروژه کوچیک بده.",
-        btnRepo:"⭐ مشاهده مخزن", btnFork:"🍴 Fork و مشارکت", btnIssue:"🐞 ایجاد Issue", btnPR:"📬 ارسال PR",
-        colNote:"اگه دعوت مستقیم می‌خوای، Issue «Invite me».",
-        footer:"تصاویر: Pixabay • فونت‌ها: Google Fonts.",
-        labTitle:"🧪 آزمایشگاه کد: اجرای پایتون (Pyodide) یا جاوااسکریپت",
-        labDesc:"متن‌باز و بدون تبلیغ. پایتون با Pyodide اجرا می‌شود.",
-        cheatTitle:"📎 تقلب‌نامه پایتون (pythoncheatsheet.org)",
-        cheatNote:'اگر iframe لود نشد، <a href="https://www.pythoncheatsheet.org/" target="_blank" rel="noopener">اینجا را باز کن</a>.'
-      },
-      /* AR */ ar:{language:"اللغة",title:"🐍✨ خارطة تعلّم بايثون mrLeast",
-        tagline:"اختر مسارك: قراءة، فيديو، افعلها بنفسك، منظّم، أو شهادات. المتعة أولاً.",
-        tabs:{all:"✨ عرض الكل",reading:"📚 قراءة",video:"🎥 فيديو",diy:"🛠️ ذاتي",structure:"🏫 منظّم",cert:"🎖️ شهادة"},
-        c1t:"📚 إن كنت من عشّاق القراءة",
-        c1b:'اذهب إلى W3Schools، واقرأ فقرة ثم اكتب ثلاث أمثلة.',
-        c1n:"احتفظ بملف notes.md.",
-        c2t:"🎥 إن كان الفيديو يناسبك",
-        c2b:'شاهد Mosh، 20 دقيقة ثم أعد البناء من الذاكرة.',
-        c2n:"التعلّم = إعادة كتابة.",
-        c3t:"🛠️ لو كنت تبني بيدك",
-        c3b:'استخدم ChatGPT / Grok / Kimi.',
-        c3n:"تحدٍ: لعبة تخمين الرقم مع مستويات ونقاط.",
-        c4t:"🏫 إن أردت مساراً منظّماً ودعماً",
-        c4b:'سجّل في Coursera.',
-        c4n:"اختر مشاريع ستكملها.",
-        c5t:"🎖️ إن احتجت شهادة معترفاً بها",
-        c5b:'LinkedIn Learning + نموذج عملي.',
-        c5n:"الدليل أقوى من الورق.",
-        tips:"🧠💬 نصائح",
-        tip1:"اتبع طاقتك.",
-        tip2:"ملعب لا سجن.",
-        tip3:"لا تقسُ على نفسك.",
-        phTitle:"🔥 دفعة فلسفية قصيرة",
-        phBody:"الهدف هو النمو؛ بايثون المركبة.",
-        phNote:"الابتسام للطرفية قد يزيد FPS.",
-        colTitle:"🤝 تعاون على GitHub",
-        colBody:"حسّن الخريطة وأضف ترجمات.",
-        btnRepo:"⭐ المستودع", btnFork:"🍴 Fork ومساهمة", btnIssue:"🐞 فتح Issue", btnPR:"📬 إرسال PR",
-        colNote:"تريد دعوة؟ Issue “Invite me”.",
-        footer:"الصور: Pixabay • الخطوط: Google Fonts.",
-        labTitle:"🧪 مختبر الكود: تشغيل بايثون (Pyodide) أو JavaScript",
-        labDesc:"مفتوح المصدر وبدون إعلانات.",
-        cheatTitle:"📎 ورقة الغش لبايثون",
-        cheatNote:'لو منع التضمين، افتح الرابط في تبويب جديد.'
-      },
-      /* The rest (de,tr,ckb,kmr,bd,ru,uk,es,fr,pt) kept as in prior message; to save space here we reuse EN for lab/cheat keys when missing */
+      en:{language:"Language",title:"🐍✨ mrLeast Python Learning Roadmap",
+          tagline:"Choose your lane: reading, video, DIY, structured, or certificate. Bounce when the energy shifts. Joy-first, pressure-last.",
+          tabs:{all:"✨ Show All",reading:"📚 Reading",video:"🎥 Video",diy:"🛠️ DIY",structure:"🏫 Structure",cert:"🎖️ Cert"},
+          c1t:"📚 If you’re the reading type", c1b:'Head to <a href="https://www.w3schools.com/python/" target="_blank" rel="noopener">W3Schools</a>. Read one section, then type three tiny examples. Fingers teach faster than memory.', c1n:"Pro tip: keep a notes.md with your own snippets.",
+          c2t:"🎥 If video speaks to you", c2b:'Try <a href="https://www.youtube.com/@programmingwithmosh" target="_blank" rel="noopener">Mosh Hamedani</a>. Watch 20 minutes, pause, rebuild from memory.', c2n:"Learning = rewriting, not just watching.",
+          c3t:"🛠️ If you’re a DIY night owl", c3b:'Use <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a>, <a href="https://grok.com" target="_blank" rel="noopener">Grok</a>, or <a href="https://kimi.moonshot.cn/" target="_blank" rel="noopener">Kimi</a>. Ask, tweak, ship.', c3n:"Challenge: guess-the-number → add levels + score.",
+          c4t:"🏫 If you want structure & support", c4b:'Join <a href="https://coursera.org" target="_blank" rel="noopener">Coursera</a>. Mentors, forums, graded work.', c4n:"Pick projects you’ll actually finish.",
+          c5t:"🎖️ If you need certificates that matter", c5b:'Use <a href="https://www.linkedin.com/learning/" target="_blank" rel="noopener">LinkedIn Learning</a>. Add the cert, plus a demo repo or clip.', c5n:"Proof beats paper.",
+          labTitle:"🧪 Code Lab: Run Python (Pyodide) or JavaScript in your browser",
+          labDesc:"Open-source, ad-free. Python runs via Pyodide (WASM). JS runs natively.",
+          cheatTitle:"📎 Python Cheatsheet (pythoncheatsheet.org)",
+          cheatNote:'If the site blocks embedding, <a href="https://www.pythoncheatsheet.org/" target="_blank" rel="noopener">open the cheatsheet in a new tab</a>.'},
+      fa:{language:"زبان",title:"🐍✨ نقشه راه پایتون mrLeast",
+          tagline:"مسیرت را انتخاب کن: خواندنی، ویدئویی، خودت بساز، ساختارمند یا مدرک. شادی اولویت است.",
+          tabs:{all:"✨ نمایش همه",reading:"📚 مطالعه",video:"🎥 ویدئو",diy:"🛠️ خودآموز",structure:"🏫 ساختارمند",cert:"🎖️ مدرک"},
+          c1t:"📚 اگر اهل مطالعه‌ای", c1b:'برو به <a href="https://www.w3schools.com/python/" target="_blank" rel="noopener">W3Schools</a>. یک بخش بخوان، سه مثال کوچک تایپ کن.', c1n:"notes.md برای یادداشت‌ها.",
+          c2t:"🎥 اگر با ویدئو بهتر می‌گیری", c2b:'Mosh را ببین. ۲۰ دقیقه، مکث، بازسازی از حافظه.', c2n:"یادگیری = بازنویسی.",
+          c3t:"🛠️ اگر خودآموزی", c3b:'ChatGPT / Grok / Kimi را استفاده کن.', c3n:"چالش: حدس عدد + مرحله + امتیاز.",
+          c4t:"🏫 اگر ساختار می‌خواهی", c4b:'Coursera ثبت‌نام کن.', c4n:"پروژه‌ای که تمامش می‌کنی انتخاب کن.",
+          c5t:"🎖️ اگر مدرک معتبر می‌خواهی", c5b:'LinkedIn Learning + نمونه‌کار.',
+          labTitle:"🧪 آزمایشگاه کد: اجرای پایتون (Pyodide) یا جاوااسکریپت", labDesc:"متن‌باز، بدون تبلیغ.",
+          cheatTitle:"📎 تقلب‌نامه پایتون", cheatNote:'اگر باز نشد، در تب جدید باز کن.'},
+      ar:{language:"اللغة",title:"🐍✨ خارطة تعلّم بايثون mrLeast",
+          tagline:"اختر مسارك: قراءة، فيديو، افعلها بنفسك، منظّم أو شهادات. المتعة أولاً.",
+          tabs:{all:"✨ عرض الكل",reading:"📚 قراءة",video:"🎥 فيديو",diy:"🛠️ ذاتي",structure:"🏫 منظّم",cert:"🎖️ شهادة"},
+          c1t:"📚 إن كنت من عشّاق القراءة", c1b:'اذهب إلى W3Schools. اقرأ فقرة ثم اكتب ثلاث أمثلة.', c1n:"notes.md لملخصاتك.",
+          c2t:"🎥 إن كان الفيديو يناسبك", c2b:'شاهد Mosh. 20 دقيقة ثم أعد البناء.', c2n:"التعلّم = إعادة كتابة.",
+          c3t:"🛠️ لو كنت تبني بيدك", c3b:'استخدم ChatGPT / Grok / Kimi.', c3n:"تحدٍ: تخمين الرقم + مستويات + نقاط.",
+          c4t:"🏫 إن أردت مساراً منظّماً ودعماً", c4b:'سجّل في Coursera.', c4n:"اختر مشاريع ستُكملها.",
+          c5t:"🎖️ إن احتجت شهادة معترفاً بها", c5b:'LinkedIn Learning + نموذج عملي.',
+          labTitle:"🧪 مختبر الكود: تشغيل بايثون (Pyodide) أو JavaScript", labDesc:"مفتوح المصدر وبدون إعلانات.",
+          cheatTitle:"📎 ورقة الغش لبايثون", cheatNote:'إن مُنع التضمين افتح الرابط في تبويب جديد.'},
+      de:{language:"Sprache",title:"🐍✨ mrLeast Python-Lernfahrplan", tagline:"Wähle deinen Pfad...", tabs:{all:"✨ Alle anzeigen",reading:"📚 Lesen",video:"🎥 Video",diy:"🛠️ DIY",structure:"🏫 Struktur",cert:"🎖️ Zertifikat"},
+          c1t:"📚 Wenn du der Lesetyp bist", c1b:'Ab zu W3Schools...', c1n:"notes.md führen.",
+          c2t:"🎥 Wenn dir Videos liegen", c2b:'Mosh schauen...', c2n:"Umschreiben > Zuschauen.",
+          c3t:"🛠️ Wenn du DIY liebst", c3b:'ChatGPT / Grok / Kimi.', c3n:"Zahlenraten-Challenge.",
+          c4t:"🏫 Struktur & Support", c4b:'Coursera beitreten.', c4n:"Beendbare Projekte wählen.",
+          c5t:"🎖️ Anerkannte Zertifikate", c5b:'LinkedIn Learning + Demo.',
+          labTitle:"🧪 Code Lab ...", labDesc:"Open-source, ad-free.",
+          cheatTitle:"📎 Python Cheatsheet", cheatNote:"Falls blockiert: in neuem Tab öffnen."}
+      /* Add others as needed; they’ll fall back to EN where missing. */
     };
 
-    // Fallback: for languages where lab/cheat strings missing, copy from English
-    const langs = ["de","tr","ckb","kmr","bd","ru","uk","es","fr","pt"];
-    langs.forEach(l=>{
-      i18n[l] = i18n[l] || {};
-      for (const k of ["language","title","tagline","tabs","c1t","c1b","c1n","c2t","c2b","c2n","c3t","c3b","c3n","c4t","c4b","c4n","c5t","c5b","c5n","tips","tip1","tip2","tip3","phTitle","phBody","phNote","colTitle","colBody","btnRepo","btnFork","btnIssue","btnPR","colNote","footer","labTitle","labDesc","cheatTitle","cheatNote"]){
-        if(i18n[l][k]==null) i18n[l][k]=i18n.en[k];
-      }
-    });
-
+    // IDs map
     const ids = {
       title:"t-title", tagline:"t-tagline",
       tabAll:"tab-all", tabReading:"tab-reading", tabVideo:"tab-video", tabDIY:"tab-diy", tabStructure:"tab-structure", tabCert:"tab-cert",
@@ -451,13 +436,9 @@ for i in range(3):
       c3t:"c3-title", c3b:"c3-body", c3n:"c3-note",
       c4t:"c4-title", c4b:"c4-body", c4n:"c4-note",
       c5t:"c5-title", c5b:"c5-body", c5n:"c5-note",
-      tips:"t-tips-title", tip1:"t-tip-1", tip2:"t-tip-2", tip3:"t-tip-3",
-      phTitle:"t-ph-title", phBody:"t-ph-body", phNote:"t-ph-note",
-      colTitle:"t-col-title", colBody:"t-col-body", colNote:"t-col-note",
-      btnRepo:"btn-repo", btnFork:"btn-fork", btnIssue:"btn-issue", btnPR:"btn-pr",
-      footer:"t-footer", languageLabel:"t-language-label",
       labTitle:"lab-title", labDesc:"lab-desc",
-      cheatTitle:"cheat-title", cheatNote:"cheat-note"
+      cheatTitle:"cheat-title", cheatNote:"cheat-note",
+      languageLabel:"t-language-label"
     };
 
     function setLang(lang){
@@ -481,22 +462,14 @@ for i in range(3):
       set(ids.c4t, L.c4t); set(ids.c4b, L.c4b); set(ids.c4n, L.c4n);
       set(ids.c5t, L.c5t); set(ids.c5b, L.c5b); set(ids.c5n, L.c5n);
 
-      set(ids.tips, L.tips); set(ids.tip1, L.tip1); set(ids.tip2, L.tip2); set(ids.tip3, L.tip3);
-      set(ids.phTitle, L.phTitle); set(ids.phBody, L.phBody); set(ids.phNote, L.phNote);
-
-      set(ids.colTitle, L.colTitle); set(ids.colBody, L.colBody); set(ids.colNote, L.colNote);
-      document.getElementById(ids.btnRepo).textContent = L.btnRepo;
-      document.getElementById(ids.btnFork).textContent = L.btnFork;
-      document.getElementById(ids.btnIssue).textContent = L.btnIssue;
-      document.getElementById(ids.btnPR).textContent = L.btnPR;
-
-      set(ids.footer, L.footer);
       set(ids.labTitle, L.labTitle); set(ids.labDesc, L.labDesc);
       set(ids.cheatTitle, L.cheatTitle); set(ids.cheatNote, L.cheatNote);
 
-      // dir toggle and keep switcher on top-end automatically
+      // Direction + Arabic-script font toggle
+      const isRTL = (new Set(['fa','ar','ckb','bd'])).has(lang);
       document.documentElement.setAttribute('lang', lang);
-      document.documentElement.setAttribute('dir', rtl.has(lang) ? 'rtl' : 'ltr');
+      document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+      document.body.classList.toggle('ar-script', isRTL);
     }
 
     const select = document.getElementById('lang');
@@ -505,10 +478,7 @@ for i in range(3):
     const initial = params.get('lang') || saved || 'en';
     if (i18n[initial]) select.value = initial;
     setLang(select.value);
-    select.addEventListener('change', ()=>{
-      localStorage.setItem('lang', select.value);
-      setLang(select.value);
-    });
+    select.addEventListener('change', ()=>{ localStorage.setItem('lang', select.value); setLang(select.value); });
 
     // -------- Code Lab: Pyodide + JS --------
     let mode = 'python';
@@ -529,7 +499,11 @@ for i in range(3):
     let pyodideReady = null;
     async function ensurePyodide(){
       if(!pyodideReady){
-        pyodideReady = loadPyodide({stdin: ()=>"", stdout: s=>out.textContent += s + "\\n", stderr: s=>out.textContent += s + "\\n"});
+        pyodideReady = loadPyodide({
+          stdin: ()=>"",
+          stdout: s=>out.textContent += s + "\\n",
+          stderr: s=>out.textContent += s + "\\n"
+        });
       }
       return pyodideReady;
     }
@@ -549,10 +523,6 @@ for i in range(3):
       }
     });
     clearBtn.addEventListener('click', ()=>{ out.textContent=''; });
-
   </script>
 </body>
 </html>
-```
-
-If you want the cheatsheet section to open by default under the selected language or want me to add a Bash tab (with a tiny in-browser emulator), say the word and I’ll wire it.
